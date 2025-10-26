@@ -120,8 +120,6 @@ function Home({ history, setHistory }) {
   const analyzeTweet = async () => {
     if (!tweet.trim()) return;
 
-
-
     try {
       const response = await axios.post(
         "https://twitter-sentiment-analysis-1-uq1a.onrender.com/analyze",
@@ -136,102 +134,99 @@ function Home({ history, setHistory }) {
       console.error(error);
       setSentiment("Error analyzing tweet");
     }
+  };
 
+  return (
+    <div className="text-center">
+      <h2 className="mb-3">Enter a Tweet for Sentiment Analysis</h2>
+      <textarea
+        className="form-control mb-3 mx-auto"
+        style={{ maxWidth: "600px" }}
+        rows="4"
+        value={tweet}
+        onChange={(e) => setTweet(e.target.value)}
+        placeholder="Type your tweet here..."
+      />
+      <button className="btn btn-primary mb-4" onClick={analyzeTweet}>
+        Analyze Sentiment
+      </button>
 
-    return (
-      <div className="text-center">
-        <h2 className="mb-3">Enter a Tweet for Sentiment Analysis</h2>
-        <textarea
-          className="form-control mb-3 mx-auto"
-          style={{ maxWidth: "600px" }}
-          rows="4"
-          value={tweet}
-          onChange={(e) => setTweet(e.target.value)}
-          placeholder="Type your tweet here..."
-        />
-        <button className="btn btn-primary mb-4" onClick={analyzeTweet}>
-          Analyze Sentiment
-        </button>
+      {/* Sentiment Result */}
+      {sentiment && (
+        <div
+          className="mb-4 p-3 rounded"
+          style={{
+            maxWidth: "600px",
+            margin: "auto",
+            backgroundColor:
+              sentiment === "Positive"
+                ? "#28a745" // green
+                : sentiment === "Negative"
+                ? "#dc3545" // red
+                : "#6c757d", // gray for Neutral
+            color: "#ffffff",
+            fontWeight: "bold",
+            fontSize: "1.2rem",
+          }}
+        >
+          Sentiment: {sentiment}
+        </div>
+      )}
 
-        {/* Sentiment Result */}
-        {sentiment && (
-          <div
-            className="mb-4 p-3 rounded"
-            style={{
-              maxWidth: "600px",
-              margin: "auto",
-              backgroundColor:
-                sentiment === "Positive"
-                  ? "#28a745"   // green
-                  : sentiment === "Negative"
-                    ? "#dc3545"   // red
-                    : "#6c757d",  // gray for Neutral
-              color: "#ffffff", // white text for all for readability
-              fontWeight: "bold",
-              fontSize: "1.2rem",
-            }}
-          >
-            Sentiment: {sentiment}
+      {/* History */}
+      <History history={history} setHistory={setHistory} />
+    </div>
+  );
+}
+
+// ✅ Main App Component (export correctly placed)
+function App() {
+  const [history, setHistory] = useState([]);
+
+  return (
+    <div>
+      {/* Navbar */}
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container-fluid">
+          <Link className="navbar-brand" to="/">
+            Twitter Sentiment
+          </Link>
+          <div className="collapse navbar-collapse">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/">
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/positive">
+                  Positive
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/neutral">
+                  Neutral
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/negative">
+                  Negative
+                </Link>
+              </li>
+            </ul>
           </div>
-        )}
+        </div>
+      </nav>
 
-        {/* History */}
-        <History history={history} setHistory={setHistory} />
-      </div>
-    );
-  }
+      {/* Routes */}
+      <Routes>
+        <Route path="/" element={<Home history={history} setHistory={setHistory} />} />
+        <Route path="/positive" element={<SentimentPage sentiment="Positive" />} />
+        <Route path="/neutral" element={<SentimentPage sentiment="Neutral" />} />
+        <Route path="/negative" element={<SentimentPage sentiment="Negative" />} />
+      </Routes>
+    </div>
+  );
+}
 
-  // Main App Component
-  function App() {
-    const [history, setHistory] = useState([]);
-
-    return (
-      <div>
-        {/* Navbar */}
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div className="container-fluid">
-            <Link className="navbar-brand" to="/">
-              Twitter Sentiment
-            </Link>
-            <div className="collapse navbar-collapse">
-              <ul className="navbar-nav ms-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/">
-                    Home
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/positive">
-                    Positive
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/neutral">
-                    Neutral
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/negative">
-                    Negative
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-
-
-        {/* Routes */}
-        <Routes>
-          <Route path="/" element={<Home history={history} setHistory={setHistory} />} />
-          <Route path="/positive" element={<SentimentPage sentiment="Positive" />} />
-          <Route path="/neutral" element={<SentimentPage sentiment="Neutral" />} />
-          <Route path="/negative" element={<SentimentPage sentiment="Negative" />} />
-        </Routes>
-      </div>
-    );
-  }
-
-  export default App;
-
-
+export default App;
