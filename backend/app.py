@@ -1,9 +1,16 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import nltk
 
 app = Flask(__name__)
 CORS(app)
+
+# ✅ Ensure vader_lexicon is available, even in Render or server
+try:
+    nltk.data.find('sentiment/vader_lexicon.zip')
+except LookupError:
+    nltk.download('vader_lexicon')
 
 # Initialize VADER
 sia = SentimentIntensityAnalyzer()
@@ -32,22 +39,4 @@ def home():
     return "Flask backend is running"
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
-
-# from flask import Flask, request, jsonify
-# from flask_cors import CORS
-#
-# app = Flask(__name__)
-# CORS(app)  # This allows React to talk to Flask
-#
-# @app.route('/analyze', methods=['POST'])
-# def analyze():
-#     data = request.get_json()
-#     text = data.get('text', '')
-#     # Simple sentiment logic (replace with your model)
-#     sentiment = 'positive' if 'good' in text.lower() else 'negative'
-#     return jsonify({'sentiment': sentiment})
-#
-# if __name__ == '__main__':
-#     app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
