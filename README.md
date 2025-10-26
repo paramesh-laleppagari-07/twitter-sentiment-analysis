@@ -154,3 +154,65 @@ LinkedIn: www.linkedin.com/in/paramesh-laleppagari
 1.Integrate Twitter API (Tweepy) to fetch live tweets
 2.Add data visualization charts (Recharts / Chart.js)
 3.Deploy backend on Render and frontend on Netlify for live demo
+
+## ----------------------------------------------------
+## Project Deployment to (Render) for live link:
+# -----------------------------------------------------
+
+This project has been successfully deployed using Render
+ — a cloud platform that supports both backend APIs and frontend web apps.
+
+## Backend Deployment
+``` bash
+Platform: Render Web Service
+
+Framework: Flask (Python)
+
+Purpose: Provides the sentiment analysis API endpoint (/analyze)
+
+Deployment Steps:
+
+Created a new Web Service on Render
+
+Connected the GitHub repository
+
+Selected the backend directory containing app.py and requirements.txt
+
+Set the Start Command as:
+
+gunicorn app:app
+
+
+Render automatically installed dependencies and deployed the backend service
+
+✅ Live Backend URL:
+👉 https://twitter-sentiment-analysis-1-uq1a.onrender.com
+
+## ------------------------------------------
+## Frontend Deployment
+# ----------------------------------------
+Platform: Render Static Site
+
+Framework: React.js
+
+Purpose: Provides the user interface for entering tweets and displaying sentiment results
+
+Deployment Steps:
+
+Built the React app using
+
+npm run build
+
+
+Pushed the build folder and source code to GitHub
+
+Created a Static Site on Render
+
+Linked it to the frontend folder (frontend/twitter-frontend)
+
+Render automatically built and deployed the frontend
+
+✅ Live Frontend URL:
+👉 https://twitter-sentiment-analysis-front.onrender.com
+
+```
